@@ -16,7 +16,6 @@ concurrency:
 
 jobs:
   deploy:
-    name: my-job
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

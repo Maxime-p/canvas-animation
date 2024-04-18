@@ -5,10 +5,11 @@ import { DeviceOrientation } from '../../utils/device/DeviceOrientation.ts'
 import { Bubble } from './Bubble'
 
 export class BouncingBubbleScene extends Scene {
-  private bubbles: Bubble[] = []
+  bubbles: Bubble[] = []
   private orientation: DeviceOrientation | undefined
+  private transitionWall: 'top' | 'bottom'
 
-  constructor(nBubbles: number, id: string) {
+  constructor(nBubbles: number, id: string, transitionWall: 'top' | 'bottom') {
     super(id)
 
     this.params.threshold = 75
@@ -17,6 +18,7 @@ export class BouncingBubbleScene extends Scene {
     this.params.radius = 10
     this.params.nBubbles = nBubbles
     this.params.gStrength = 300
+    this.transitionWall = transitionWall
 
     this.debugFolder?.add(this.params, 'threshold', 0, 350)
     this.debugFolder?.add(this.params, 'speed', -10, 10, 0.25)
@@ -44,11 +46,31 @@ export class BouncingBubbleScene extends Scene {
         this.params.radius,
         this.height - this.params.radius
       )
-      const bubble_ = new Bubble(this.context, x_, y__, this.params.radius)
+      const bubble_ = new Bubble(
+        this.context,
+        x_,
+        y__,
+        this.params.radius,
+        this.transitionWall
+      )
       this.bubbles.push(bubble_)
     }
     this.clear()
     this.draw()
+  }
+
+  addBubble(x: number, _y: number, vx: number, vy: number) {
+    const y_ = this.transitionWall === 'top' ? 0 : this.height
+    const newBubble = new Bubble(
+      this.context,
+      x,
+      y_,
+      this.params.radius,
+      this.transitionWall
+    )
+    newBubble.vx = vx
+    newBubble.vy = vy
+    this.bubbles.push(newBubble)
   }
 
   update() {

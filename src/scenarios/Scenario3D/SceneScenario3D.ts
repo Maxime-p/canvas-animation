@@ -2,6 +2,7 @@ import { Scene } from '@3d'
 import { randomRange } from '@Utils'
 import { Body, Composite, Engine, Runner } from 'matter-js'
 import * as THREE from 'three'
+import { Material } from 'three'
 
 import { Bubble } from './Bubble.ts'
 import { Wall } from './Wall.ts'
@@ -84,6 +85,22 @@ export default class SceneScenario3D extends Scene {
 
     /** init */
     this.resize()
+  }
+
+  addBubble(/* x, y, vx, vy */) {
+    // todo
+    // update du composite
+  }
+
+  removeBubble(bubble: Bubble) {
+    bubble.geometry.dispose()
+    if (bubble.material instanceof Material) {
+      bubble.material.dispose()
+    }
+    bubble.removeFromParent()
+
+    // remove from physic engine (composite)
+    // remove from this.bubbles
   }
 
   update() {

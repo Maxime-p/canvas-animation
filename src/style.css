@@ -25,3 +25,17 @@ h1 {
   width: 50%;
   height: 30vh;
 }
+
+button {
+  border: solid white 1px;
+  background-color: transparent;
+  text-transform: uppercase;
+  color: white;
+  padding-inline: 2em;
+  padding-block: 1em;
+  border-radius: 2em;
+}
+button:active {
+  background-color: white;
+  color: black;
+}

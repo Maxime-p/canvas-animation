@@ -43,9 +43,13 @@ export class Scene {
     this.context.clearRect(0, 0, this.width, this.height)
   }
 
+  scroll() {
+    this.domElement.setSize()
+  }
   update() {
     return this.params.isUpdate
   }
+  destroy() {}
 
   resize() {
     this.domElement.setSize()
@@ -54,4 +58,7 @@ export class Scene {
     this.canvas.height = this.domElement.height * pixelRatio
     this.context.scale(pixelRatio, pixelRatio)
   }
+
+  onDeviceOrientation() {}
+  onDeviceAcceleration() {}
 }

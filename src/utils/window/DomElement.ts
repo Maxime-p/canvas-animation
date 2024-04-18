@@ -8,6 +8,8 @@ export class DomElement {
     bottom: number
     right: number
   } = { top: 0, left: 0, bottom: 0, right: 0 }
+  isVisible: any
+  aspectRatio: number | undefined
 
   constructor(id: string) {
     this.element = document.getElementById(id) as HTMLCanvasElement

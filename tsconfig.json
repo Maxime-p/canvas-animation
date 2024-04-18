@@ -18,10 +18,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "types": ["vite-plugin-terminal/client"],
     "baseUrl": "src",
     "paths": {
       "@Scenarios": ["scenarios"],
       "@2d": ["2d"],
+      "@3d": ["3d"],
       "@Utils": ["utils"]
     }
   },

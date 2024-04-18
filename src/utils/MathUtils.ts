@@ -11,3 +11,11 @@ export const distance2d = (x1: number, y1: number, x2: number, y2: number) => {
   const dy = y2 - y1
   return Math.sqrt(dx * dx + dy * dy)
 }
+
+export const clamp = (value: number, min: number, max: number) => {
+  const min_ = max < min ? max : min
+  const max_ = min > max ? min : max
+  value = value > max_ ? max_ : value
+  value = value < min_ ? min_ : value
+  return value
+}

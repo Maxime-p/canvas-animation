@@ -1,20 +1,23 @@
 import { Line, Scene } from '@2d'
-import { distance2d, randomRange } from '@Utils'
+import { clamp, distance2d, randomRange } from '@Utils'
+import { terminal } from 'virtual:terminal'
 
+import { DeviceOrientation } from '../../utils/device/DeviceOrientation.ts'
 import { Bubble } from './Bubble'
 
 export class BouncingBubbleScene extends Scene {
   private bubbles: Bubble[] = []
+  private orientation: DeviceOrientation | undefined
 
   constructor(nBubbles: number, id: string) {
     super(id)
 
-    this.params.threshold = 100
+    this.params.threshold = 75
     this.params.lineWidth = 2
     this.params.speed = 1
     this.params.radius = 10
-    this.params.strokeWeight = 2
     this.params.nBubbles = nBubbles
+    this.params.gStrength = 300
 
     this.debugFolder?.add(this.params, 'threshold', 0, 350)
     this.debugFolder?.add(this.params, 'speed', -10, 10, 0.25)
@@ -26,7 +29,14 @@ export class BouncingBubbleScene extends Scene {
       ?.add(this.params, 'nBubbles', 0, 500, 1)
       .name('Bubbles number')
 
-    for (let i = 0; i < nBubbles; i++) {
+    this.windowContext.useDeviceOrientation = true
+    this.orientation = this.windowContext.orientation
+
+    this.generateBubbles()
+  }
+
+  generateBubbles() {
+    for (let i = 0; i < this.params.nBubbles; i++) {
       const x_ = randomRange(
         this.params.radius,
         this.width - this.params.radius
@@ -38,6 +48,8 @@ export class BouncingBubbleScene extends Scene {
       const bubble_ = new Bubble(this.context, x_, y__, this.params.radius)
       this.bubbles.push(bubble_)
     }
+    this.clear()
+    this.draw()
   }
 
   update() {
@@ -49,28 +61,9 @@ export class BouncingBubbleScene extends Scene {
         this.width,
         this.height,
         this.windowContext.time.delta,
-        this.params.speed,
-        this.params.radius
+        this.params.speed
       )
     })
-
-    // Nb bubbles changes
-    if (this.params.nBubbles !== this.bubbles.length) {
-      this.bubbles = this.bubbles.slice(0, this.params.nBubbles)
-      for (let i = this.bubbles.length; i < this.params.nBubbles; i++) {
-        const x_ = randomRange(
-          this.params.radius,
-          this.width - this.params.radius
-        )
-        const y__ = randomRange(
-          this.params.radius,
-          this.height - this.params.radius
-        )
-        const bubble_ = new Bubble(this.context, x_, y__, this.params.radius)
-        this.bubbles.push(bubble_)
-      }
-    }
-
     this.draw()
   }
 
@@ -97,6 +90,24 @@ export class BouncingBubbleScene extends Scene {
 
       this.bubbles.forEach((b) => {
         b.draw()
+      })
+    }
+  }
+
+  onDeviceOrientation() {
+    /** gravity orientation */
+    let gx_ = this.orientation.gamma / 90 // -1 : 1
+    let gy_ = this.orientation.beta / 90 // -1 : 1
+    gx_ = clamp(gx_, -1, 1)
+    gy_ = clamp(gy_, -1, 1)
+
+    /** update */
+    gx_ *= this.params.gStrength // apply gravity strength
+    gy_ *= this.params.gStrength // apply gravity strength
+    if (!!this.bubbles) {
+      this.bubbles.forEach((b) => {
+        b.gx = gx_
+        b.gy = gy_
       })
     }
   }

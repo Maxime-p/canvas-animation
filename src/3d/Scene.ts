@@ -54,9 +54,7 @@ export class Scene extends THREE.Scene {
   get height() {
     return this.domElement.height
   }
-  get position() {
-    return this.domElement.position
-  }
+
   get isVisible() {
     return this.domElement.isVisible
   }

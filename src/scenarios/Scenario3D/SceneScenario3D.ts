@@ -2,7 +2,6 @@ import { Scene } from '@3d'
 import { randomRange } from '@Utils'
 import { Body, Composite, Engine, Runner } from 'matter-js'
 import * as THREE from 'three'
-import { terminal } from 'virtual:terminal'
 
 import { Bubble } from './Bubble.ts'
 import { Wall } from './Wall.ts'

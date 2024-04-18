@@ -1,6 +1,5 @@
 import { Line, Scene } from '@2d'
 import { clamp, distance2d, randomRange } from '@Utils'
-import { terminal } from 'virtual:terminal'
 
 import { DeviceOrientation } from '../../utils/device/DeviceOrientation.ts'
 import { Bubble } from './Bubble'
@@ -96,6 +95,7 @@ export class BouncingBubbleScene extends Scene {
 
   onDeviceOrientation() {
     /** gravity orientation */
+    if (!this.orientation) return
     let gx_ = this.orientation.gamma / 90 // -1 : 1
     let gy_ = this.orientation.beta / 90 // -1 : 1
     gx_ = clamp(gx_, -1, 1)

@@ -3,9 +3,9 @@ import { terminal } from 'virtual:terminal'
 import EventEmitter from '../events/EventEmitter.ts'
 
 export class DeviceOrientation extends EventEmitter {
-  private alpha: number | null = 0 // Z (0 to 360)
-  private beta: number | null = 0 // Y (180 to -180)
-  private gamma: number | null = 0 // X (90 to -90)
+  alpha: number = 0 // Z (0 to 360)
+  beta: number = 0 // Y (180 to -180)
+  gamma: number = 0 // X (90 to -90)
 
   constructor() {
     super()
@@ -29,7 +29,8 @@ export class DeviceOrientation extends EventEmitter {
         })
         .catch((err) => {
           terminal.log(
-            'Integration with Permissions API is not enabled, still try to start app.'
+            'Integration with Permissions API is not enabled, still try to start app.',
+            err
           )
           this.init()
         })
@@ -41,6 +42,7 @@ export class DeviceOrientation extends EventEmitter {
 
   init() {
     window.addEventListener('deviceorientation', (e) => {
+      if (!e.alpha || !e.beta || !e.gamma) return
       this.alpha = e.alpha
       this.beta = e.beta
       this.gamma = e.gamma

@@ -1,11 +1,13 @@
+// @ts-ignore
 import { Accelerometer } from '../../libs/sensor-polyfills/src/motion-sensors'
 import EventEmitter from '../events/EventEmitter'
 
 export default class DeviceAcceleration extends EventEmitter {
-  private sensor: any
-  private x: any
-  private y: any
-  private z: any
+  private sensor: Accelerometer
+  x: number
+  y: number
+  z: number
+
   constructor() {
     super()
 
@@ -16,6 +18,7 @@ export default class DeviceAcceleration extends EventEmitter {
 
     /** permission */
     if (navigator.permissions) {
+      // @ts-ignore
       Promise.all([navigator.permissions.query({ name: 'accelerometer' })])
         .then((results) => {
           if (results.every((result) => result.state === 'granted')) {
@@ -26,7 +29,8 @@ export default class DeviceAcceleration extends EventEmitter {
         })
         .catch((err) => {
           console.log(
-            'Integration with Permissions API is not enabled, still try to start app.'
+            'Integration with Permissions API is not enabled, still try to start app.',
+            err
           )
           this.init()
         })

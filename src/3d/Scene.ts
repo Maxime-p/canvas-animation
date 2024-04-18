@@ -87,7 +87,7 @@ export class Scene extends THREE.Scene {
 
     /** camera */
     if (this.camera instanceof THREE.PerspectiveCamera) {
-      this.camera.aspect = this.domElement.aspectRatio
+      this.camera.aspect = this.domElement.aspectRatio ?? 1
       this.camera.updateProjectionMatrix()
     }
 

@@ -5,7 +5,7 @@ import Terminal from 'vite-plugin-terminal'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
-  base: '',
+  base: '/canvas-animation/',
   plugins: [tsconfigPaths(), Terminal(), mkcert(), qrcode()],
   server: {
     https: true,

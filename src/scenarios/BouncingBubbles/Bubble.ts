@@ -10,20 +10,17 @@ export class Bubble {
   vy: number
   gx: number
   gy: number
-  private transitionWall: 'top' | 'bottom'
 
   constructor(
     context: CanvasRenderingContext2D,
     x: number,
     y: number,
-    radius: number,
-    transitionWall: 'top' | 'bottom'
+    radius: number
   ) {
     this.context = context
     this.x = x
     this.y = y
     this.radius = radius
-    this.transitionWall = transitionWall
 
     const speed = 100
     this.vx = randomRange(-speed, speed)
@@ -35,7 +32,7 @@ export class Bubble {
 
   update(
     width: number,
-    height: number,
+    _height: number,
     deltaTime = 16,
     speed = 1,
     radius = 10
@@ -47,12 +44,10 @@ export class Bubble {
 
     this.vx = this.x < this.radius ? Math.abs(this.vx) : this.vx
     this.vx = this.x > width - this.radius ? -Math.abs(this.vx) : this.vx
-    if (this.transitionWall !== 'top') {
-      this.vy = this.y < this.radius ? Math.abs(this.vy) : this.vy
-    }
-    if (this.transitionWall !== 'bottom') {
-      this.vy = this.y > height - this.radius ? -Math.abs(this.vy) : this.vy
-    }
+
+    // Can't go through the top and bottom walls
+    // this.vy = this.y < this.radius ? Math.abs(this.vy) : this.vy
+    // this.vy = this.y > height - this.radius ? -Math.abs(this.vy) : this.vy
 
     /** constrain bubbles (cf. gravity) */
     this.x = clamp(this.x, this.radius, width - this.radius)

@@ -12,11 +12,13 @@ export default class SceneScenario3D extends Scene {
   private wallTop: Wall
   private wallRight: Wall
   private wallBottom: Wall
-  private bubbles: Bubble[]
+  public bubbles: Bubble[]
   private engine: Engine
   private runner: Runner
   private bodies: Body[]
   private acceleration: any
+  public radius = 20
+
   constructor(id = 'canvas-scene', nBubbles = 10) {
     super(id)
 
@@ -46,10 +48,9 @@ export default class SceneScenario3D extends Scene {
 
     /** bubbles */
     this.bubbles = []
-    const radius_ = 20
     const colors = ['red', 'blue', 'yellow']
     for (let i = 0; i < nBubbles; i++) {
-      const bubble_ = new Bubble(radius_, colors[i % colors.length])
+      const bubble_ = new Bubble(this.radius, colors[i % colors.length])
       const x_ = (bubble_.position.x = randomRange(
         -this.width / 2,
         this.width / 2
@@ -87,9 +88,15 @@ export default class SceneScenario3D extends Scene {
     this.resize()
   }
 
-  addBubble(/* x, y, vx, vy */) {
-    // todo
+  addBubble(x: number, y: number) {
+    // create new bubble
+    const bubble_ = new Bubble(this.radius, 'red')
+    bubble_.setPosition(x, y)
+    this.add(bubble_)
+    this.bubbles.push(bubble_)
+
     // update du composite
+    Composite.add(this.engine.world, bubble_.body)
   }
 
   removeBubble(bubble: Bubble) {
@@ -100,7 +107,10 @@ export default class SceneScenario3D extends Scene {
     bubble.removeFromParent()
 
     // remove from physic engine (composite)
+    Composite.remove(this.engine.world, bubble.body)
+
     // remove from this.bubbles
+    this.bubbles = this.bubbles.filter((b) => b !== bubble)
   }
 
   update() {
@@ -139,19 +149,22 @@ export default class SceneScenario3D extends Scene {
     }
 
     if (!!this.wallLeft) {
-      const thickness_ = 10
+      const thickness_ = 20
 
       /** walls sizes */
       this.wallLeft.setSize(thickness_, this.height)
-      this.wallTop.setSize(this.width - 2 * thickness_, thickness_)
+      this.wallTop.setSize(this.width, thickness_)
       this.wallRight.setSize(thickness_, this.height)
-      this.wallBottom.setSize(this.width - 2 * thickness_, thickness_)
+      this.wallBottom.setSize(this.width, thickness_)
 
       /** walls position */
-      this.wallLeft.setPosition(-this.width / 2 + thickness_ / 2, 0)
-      this.wallTop.setPosition(0, this.height / 2 - thickness_ / 2)
-      this.wallRight.setPosition(this.width / 2 - thickness_ / 2, 0)
-      this.wallBottom.setPosition(0, -this.height / 2 + thickness_ / 2)
+      this.wallLeft.setPosition(-this.width / 2 - thickness_ / 2, 0)
+      this.wallTop.setPosition(0, this.height / 2 + thickness_ * 2)
+      this.wallRight.setPosition(this.width / 2 + thickness_ / 2, 0)
+      this.wallBottom.setPosition(
+        0,
+        -this.height / 2 - thickness_ / 2 - this.radius * 2
+      )
     }
   }
 }

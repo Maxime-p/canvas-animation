@@ -12,6 +12,8 @@ export default class SceneScenario3D extends Scene {
   private wallTop: Wall
   private wallRight: Wall
   private wallBottom: Wall
+  private platform1: Wall
+  private platform2: Wall
   public bubbles: Bubble[]
   private engine: Engine
   private runner: Runner
@@ -36,15 +38,21 @@ export default class SceneScenario3D extends Scene {
     this.wallTop = new Wall('yellow')
     this.wallRight = new Wall('blue')
     this.wallBottom = new Wall('yellow')
+    this.platform1 = new Wall('grey')
+    this.platform2 = new Wall('grey')
     this.add(this.wallLeft)
     this.add(this.wallTop)
     this.add(this.wallRight)
     this.add(this.wallBottom)
+    this.add(this.platform1)
+    this.add(this.platform2)
 
     this.wallLeft.depth = 100
     this.wallTop.depth = 100
     this.wallRight.depth = 100
     this.wallBottom.depth = 100
+    this.platform1.depth = 100
+    this.platform2.depth = 100
 
     /** bubbles */
     this.bubbles = []
@@ -69,6 +77,8 @@ export default class SceneScenario3D extends Scene {
       this.wallTop.body,
       this.wallRight.body,
       this.wallBottom.body,
+      this.platform1.body,
+      this.platform2.body,
     ]
     this.bubbles.forEach((bubble) => {
       this.bodies.push(bubble.body)
@@ -165,6 +175,12 @@ export default class SceneScenario3D extends Scene {
         0,
         -this.height / 2 - thickness_ / 2 - this.radius * 2
       )
+
+      /* platforms */
+      this.platform1.setSize(this.width / 2, 20)
+      this.platform1.setPosition(-this.width / 4, 50)
+      this.platform2.setSize(this.width / 2, 20)
+      this.platform2.setPosition(this.width / 4, -50)
     }
   }
 }

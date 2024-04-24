@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     askMotionAccess()
   })
 
-  const scene1 = new BouncingBubbleScene(50, 'scene1')
-  const scene2 = new SceneScenario3D('canvas-scene-3d', 10)
-  const scene3 = new BouncingBubbleScene(20, 'scene2')
+  const scene1 = new BouncingBubbleScene(10, 'scene1')
+  const scene2 = new SceneScenario3D('canvas-scene-3d', 5)
+  const scene3 = new BouncingBubbleScene(10, 'scene2')
 
   const windowContext = new WindowContext()
   const time = windowContext.time

@@ -39,3 +39,9 @@ button:active {
   background-color: white;
   color: black;
 }
+
+@media (max-width: 768px){
+  .scene {
+    width: 90%;
+  }
+}

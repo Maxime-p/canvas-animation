@@ -38,8 +38,8 @@ export default class SceneScenario3D extends Scene {
     this.wallTop = new Wall('yellow')
     this.wallRight = new Wall('blue')
     this.wallBottom = new Wall('yellow')
-    this.platform1 = new Wall('grey')
-    this.platform2 = new Wall('grey')
+    this.platform1 = new Wall('white')
+    this.platform2 = new Wall('white')
     this.add(this.wallLeft)
     this.add(this.wallTop)
     this.add(this.wallRight)
@@ -56,9 +56,8 @@ export default class SceneScenario3D extends Scene {
 
     /** bubbles */
     this.bubbles = []
-    const colors = ['red', 'blue', 'yellow']
     for (let i = 0; i < nBubbles; i++) {
-      const bubble_ = new Bubble(this.radius, colors[i % colors.length])
+      const bubble_ = new Bubble(this.radius, this.generateRandomColor())
       const x_ = (bubble_.position.x = randomRange(
         -this.width / 2,
         this.width / 2
@@ -100,7 +99,7 @@ export default class SceneScenario3D extends Scene {
 
   addBubble(x: number, y: number) {
     // create new bubble
-    const bubble_ = new Bubble(this.radius, 'red')
+    const bubble_ = new Bubble(this.radius, this.generateRandomColor())
     bubble_.setPosition(x, y)
     this.add(bubble_)
     this.bubbles.push(bubble_)
@@ -183,4 +182,12 @@ export default class SceneScenario3D extends Scene {
       this.platform2.setPosition(this.width / 4, -50)
     }
   }
+
+  // Random color
+  generateRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
 }
